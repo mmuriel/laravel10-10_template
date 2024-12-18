@@ -11,7 +11,7 @@
     # Opcional: Ruta del certificado de la autoridad de certificación
     # SSLCertificateChainFile /ruta/al/certificado_ca.crt
 
-    DocumentRoot /var/www/app/laravel-crm/public
+    DocumentRoot /var/www/app/public
 
     # Configuración adicional para habilitar SSL
     SSLEngine on
@@ -20,7 +20,7 @@
     SSLProtocol all -SSLv2 -SSLv3
     SSLCipherSuite HIGH:!aNULL:!MD5:!SSLv3:!SSLv2:!TLSv1
 
-    <Directory /var/www/app/laravel-crm/public>
+    <Directory /var/www/app/public>
         Options FollowSymLinks
         AllowOverride All
         Require all granted
