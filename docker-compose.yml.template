@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  crm:
+    image: maomuriel/ubun22_04-php8_1-apache2_4:0.2.4
+    container_name: "crm"
+    stdin_open: false # docker run -i
+    tty: false # docker run -t
+    environment:
+      - "TZ=America/Bogota"
+      - "DOMAIN_NAME="
+    ports:
+      - "8300:80"
+    volumes:
+      - "/path/to/project:/var/www/app"
+      - "/path/to/local/ssl-certs_and_private-key:/etc/ssl/custom-directory-name"
+      - "/path/to/custom/apache/config/sites-available:/etc/apache2/sites-available"
+    depends_on:
+      - "crm-db"
+    links:
+      - "crm-db:mysql"
+    networks:
+      - "cameyando"
+  crm-db:
+    image: docker.io/library/mariadb:10.11.2
+    container_name: "crm-db"
+    environment:
+      - "TZ=America/Bogota"
+      - "MYSQL_ROOT_PASSWORD=xxxx"
+    volumes:
+      - "/path/to/mysql/data-directory:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+    networks:
+      - "cameyando"
+  crm-phpmia:
+    container_name: "crm-phpmia"
+    image: "phpmyadmin/phpmyadmin"
+    environment:
+      - "TZ=America/Bogota"
+      - "PMA_HOST=crm-db"
+    ports:
+      - "8390:80"
+    depends_on: 
+      - "crm-db"
+    links: 
+      - "crm-db"
+    networks:
+      - "cameyando"
+networks:
+  cameyando:
+    external: true
+    driver: bridge
